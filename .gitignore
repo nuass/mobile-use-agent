@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Runtime artefacts (should NEVER be committed — may contain private chat content)
+photos/
+logs/
+state/
+ocr_tmp/
+batch/
+*.png
+*.jpg
+*.jpeg
+target_memory.json
+*.log
+
+# Allow explicitly-redacted docs assets
+!docs/screens/*.png
+
+# Local device configs
+.env
+device.local.toml

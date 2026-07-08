@@ -1,0 +1,33 @@
+{
+  "Alpha List": {
+    "last_y": 489,
+    "last_ts": "2026-07-07T14:52:35",
+    "last_screens": 25,
+    "recent_blocks": [14, 12, 9, 15, 11, 13, 10, 12],
+    "miss_streak": 0,
+    "strategy": "scroll"
+  },
+  "Beta List": {
+    "last_y": 1086,
+    "last_ts": "2026-07-07T14:52:00",
+    "last_screens": 18,
+    "recent_blocks": [7, 5, 6, 8, 7, 9, 6, 7],
+    "miss_streak": 0,
+    "strategy": "scroll"
+  },
+  "Gamma List": {
+    "last_y": 490,
+    "last_ts": "2026-07-07T14:54:15",
+    "last_screens": 12,
+    "recent_blocks": [2, 3, 1, 2, 2, 3, 2, 1],
+    "miss_streak": 0,
+    "strategy": "search"
+  },
+  "Delta List": {
+    "last_ts": "2026-07-07T13:12:03",
+    "last_screens": 6,
+    "recent_blocks": [0, 1, 0, 0, 1, 0, 0, 1],
+    "miss_streak": 0,
+    "strategy": "scroll"
+  }
+}
