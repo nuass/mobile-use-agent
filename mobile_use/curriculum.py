@@ -6,7 +6,7 @@ The caller supplies, per target:
   - a list of Chinese substrings to look for in the result rows
 
 Coordinates for the search icon and input box are UI-specific and passed in
-via `SearchUI`. Defaults match WeChat on 1080x2400.
+via `SearchUI`. Defaults match a 1080x2400 wx-style chat app.
 """
 from __future__ import annotations
 import time

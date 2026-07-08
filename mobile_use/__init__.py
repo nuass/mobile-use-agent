@@ -2,7 +2,7 @@
 
 Domain-agnostic building blocks for scraping / automating Android apps
 through pure vision (screencap + OCR) — no accessibility, no root, no
-private APIs. Designed for apps that block uiautomator (WeChat etc.).
+private APIs. Designed for apps that block uiautomator (wx and similar).
 
 Modules:
   adb          — thin wrapper around `adb` binary
@@ -16,7 +16,7 @@ Modules:
 
 The package is business-agnostic. Domain logic (which text counts as a hit,
 how to parse blocks, where to persist results) is injected via callbacks.
-See examples/wechat_family_scraper.py for a redacted end-to-end integration.
+See examples/wx_group_scraper.py for a redacted end-to-end integration.
 """
 from .adb import ADB
 from .ocr import OcrEngine

@@ -88,7 +88,7 @@ async def persist_blocks(blocks_by_target: dict[str, list[str]]) -> dict:
 
 
 def open_app_and_go_top(agent: ScrapingAgent) -> None:
-    """WeChat-style entry: back-out fully, relaunch, tap chat tab, scroll to top."""
+    """wx-style entry: back-out fully, relaunch, tap chat tab, scroll to top."""
     agent.adb.wake()
     focus = agent.adb.shell('dumpsys window displays')
     if 'com.tencent.mm' not in focus:

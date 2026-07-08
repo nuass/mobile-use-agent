@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "cony.zhang" }]
-keywords = ["adb", "android", "gui-agent", "ocr", "automation", "wechat", "self-evolving"]
+keywords = ["adb", "android", "gui-agent", "ocr", "automation", "self-evolving"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",

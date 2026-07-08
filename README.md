@@ -9,7 +9,7 @@ accessibility-based automation (uiautomator, appium, xpath, view hierarchy).
 It reads the screen the same way a human does — screenshots + OCR — and
 learns which paths are worth taking as it runs.
 
-Battle-tested on the notoriously automation-hostile WeChat client:
+Battle-tested on the notoriously automation-hostile wx client:
 14 target chat rooms, deep swipe capture, auto-pin toggle, 24/7 loop.
 
 ---
@@ -82,14 +82,14 @@ overlapping search + scroll paths don't double-count.
 - block splitter + hash (any function `text -> list[str]`)
 - persistence callback (do whatever you want with the results)
 
-Same core has been used against WeChat chat groups, WeChat mini-programs,
+Same core has been used against wx chat groups, wx mini-programs,
 and native list apps.
 
 ---
 
 ## Effect: real numbers from the reference deployment
 
-Deployment: WeChat on OPPO PEAM00 (1080×2400, Android 12), 14 target
+Deployment: wx on OPPO PEAM00 (1080×2400, Android 12), 14 target
 groups, 6-minute loop interval, 24/7 uptime, results persisted to Postgres
 via SSH tunnel.
 
@@ -177,7 +177,7 @@ result = agent.run_cycle(batch_dir='./batch/2026-07-08')
 print(result['covered'], result['missed'])
 ```
 
-See `examples/wechat_family_scraper.py` for a full 24/7 loop with search
+See `examples/wx_group_scraper.py` for a full 24/7 loop with search
 curriculum, business persistence, and app-specific entry point wired in.
 
 ---

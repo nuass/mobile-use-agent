@@ -1,6 +1,6 @@
 # Effect notes
 
-Per-target coverage progression on the reference deployment (WeChat, 14 groups).
+Per-target coverage progression on the reference deployment (wx, 14 groups).
 All group names and chat contents redacted.
 
 ## Cycle-by-cycle coverage (production)

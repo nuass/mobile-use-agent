@@ -3,7 +3,7 @@ then sampling pixels around the right edge to distinguish ON vs OFF.
 
 This works when native accessibility APIs are blocked — we treat the switch
 purely as pixels. Green-dominant pixels near the row's Y indicate ON; grey
-pixels indicate OFF. Tuned for WeChat's teal ON color but the thresholds
+pixels indicate OFF. Tuned for a teal ON color (wx-style) but the thresholds
 are configurable.
 """
 from __future__ import annotations

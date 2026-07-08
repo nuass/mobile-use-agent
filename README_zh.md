@@ -2,9 +2,9 @@
 
 **给 Android app 用的"自演进"GUI 智能体 —— 只用 ADB + 视觉（截屏 + OCR），不依赖任何辅助功能 API。**
 
-在传统自动化被拒的应用（微信、抖音这类会屏蔽 `uiautomator2` / accessibility service 的 app）上，仍能稳定完成"发现目标 → 进入 → 抓取 → 去重 → 入库 → 回滚"的完整闭环。
+在传统自动化被拒的应用（wx 及类似会屏蔽 `uiautomator2` / accessibility service 的 app）上，仍能稳定完成"发现目标 → 进入 → 抓取 → 去重 → 入库 → 回滚"的完整闭环。
 
-参考实现在**微信家政群**场景中稳定运行：14 个目标群 · 每 6 分钟一轮 · 24/7 · 14/14 覆盖。
+参考实现在**真实 wx 群**场景中稳定运行：14 个目标群 · 每 6 分钟一轮 · 24/7 · 14/14 覆盖。
 
 > 英文版：[README.md](./README.md)
 
@@ -36,7 +36,7 @@
 | 4 | **像素分类的开关校验（Pixel-classified Toggle Verify）** | 传统 CV + OCR-locate 组合 | 定位"置顶聊天"文本行 → 在开关右侧采样约 200 个像素 → 绿色通道占优判 ON、中性灰判 OFF。完全绕开无障碍 API。 |
 | 5 | **内容哈希去重 + 提前终止（Content-hash Dedup / Early Stop）** | CDC-style rolling hashes | 每帧 OCR 文本做指纹；三帧连续未变化 = 已到历史顶部，主动跳出 swipe 循环。同 cycle 内跨"scroll + search"两条路径的重叠内容也用同一哈希去重。 |
 | 6 | **自适应预算调度（Adaptive Screen Budget）** | Multi-armed bandit 思想的简化版 | 依据最近 8 圈的平均产出量把"每次刷多少屏"从 25 弹性下调到 6，让高产群保持全覆盖、静默群主动降耗。 |
-| 7 | **域无关内核 / 业务胶水分离（Domain-agnostic Kernel）** | LangGraph · Hermes agent runtime | `mobile_use/` 里 0 业务耦合。目标名单、相关性判定、记录切分、入库回调全部以回调函数注入。同一内核已跑过微信群、微信小程序、原生列表 app。 |
+| 7 | **域无关内核 / 业务胶水分离（Domain-agnostic Kernel）** | LangGraph · Hermes agent runtime | `mobile_use/` 里 0 业务耦合。目标名单、相关性判定、记录切分、入库回调全部以回调函数注入。同一内核已跑过 wx 群、wx 小程序、原生列表 app。 |
 
 **规划中未实装**：
 - **VeriGUI TVAE（Temporal Verifiable Action Graph Encoding）** — 用于把成功轨迹压缩成可复用 skill，把 30 分钟一圈缩到 5 分钟。
@@ -61,9 +61,9 @@
 
 ---
 
-## 效果（家政群参考部署真实数据）
+## 效果（参考部署真实数据）
 
-设备：OPPO PEAM00（1080×2400，Android 12） · 微信 · 14 个目标群 · 6 分钟循环 · 24/7 · PostgreSQL 存储。
+设备：OPPO PEAM00（1080×2400，Android 12） · wx · 14 个目标群 · 6 分钟循环 · 24/7 · PostgreSQL 存储。
 
 | 版本 | 覆盖 | 说明 |
 |---|---|---|
@@ -77,7 +77,7 @@
 - 挂钟 ~ 30 分钟
 - 每屏 screencap + OCR ~ 0.9 秒
 - 每个目标 6 - 25 屏（自适应）
-- 每圈落库 ~ 40 - 100 条阿姨简历 + 5 - 15 条雇主需求
+- 每圈落库 ~ 40 - 100 条业务记录
 - 0 人工介入
 
 ---
@@ -142,7 +142,7 @@ result = agent.run_cycle(batch_dir='./batch/demo')
 print(result['covered'], result['missed'])
 ```
 
-完整 24/7 loop + SEAgent curriculum + 业务落库的样例见 [`examples/wechat_family_scraper.py`](./examples/wechat_family_scraper.py)（已打码）。
+完整 24/7 loop + SEAgent curriculum + 业务落库的样例见 [`examples/wx_group_scraper.py`](./examples/wx_group_scraper.py)（已打码）。
 
 ---
 

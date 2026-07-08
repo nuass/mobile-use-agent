@@ -10,7 +10,7 @@ The class is intentionally free of any business logic. Callers supply:
                               into view (open app, hit tab, scroll to top).
   - `blocks_by_target`     — comes back as {target_name: [blocks, ...]}.
 
-See examples/wechat_family_scraper.py for the full stack wired together.
+See examples/wx_group_scraper.py for the full stack wired together.
 """
 from __future__ import annotations
 import time
