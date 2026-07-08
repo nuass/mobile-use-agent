@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mobile-use"
+name = "mobile-use-agent"
 version = "0.1.0"
 description = "Self-evolving GUI agent for Android apps — ADB + OCR only, no accessibility."
 readme = "README.md"
@@ -31,7 +31,7 @@ dependencies = [
 dev = ["pytest>=8", "ruff>=0.5"]
 
 [project.urls]
-Homepage = "https://github.com/local/mobile-use"
+Homepage = "https://github.com/nuass/mobile-use-agent"
 
 [tool.setuptools.packages.find]
 include = ["mobile_use*"]

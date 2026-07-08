@@ -1,8 +1,10 @@
-# mobile-use
+# mobile-use-agent
 
 **A self-evolving GUI agent for Android apps — driven by ADB + vision only.**
 
-`mobile-use` scrapes and automates mobile apps that block traditional
+> [中文说明 (Chinese README)](./README_zh.md)
+
+`mobile-use-agent` scrapes and automates mobile apps that block traditional
 accessibility-based automation (uiautomator, appium, xpath, view hierarchy).
 It reads the screen the same way a human does — screenshots + OCR — and
 learns which paths are worth taking as it runs.
