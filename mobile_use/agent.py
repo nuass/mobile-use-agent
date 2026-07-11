@@ -24,6 +24,7 @@ from .chat_list import ChatListScanner
 from .group_capture import GroupCapturer
 from .memory import AgenticMemory
 from .curriculum import SearchCurriculum
+from .vlm import VLMClient
 
 
 @dataclass
@@ -33,6 +34,7 @@ class AgentConfig:
     scroll_swipe: tuple[int, int, int, int, int] = (540, 1700, 540, 900, 400)
     scroll_dwell: float = 0.6
     row_pause: float = 0.3
+    vlm_miss_trigger: int = 2
 
 
 class ScrapingAgent:
@@ -42,6 +44,7 @@ class ScrapingAgent:
                  memory: AgenticMemory,
                  curriculum: Optional[SearchCurriculum] = None,
                  entry_point: Optional[Callable[['ScrapingAgent'], None]] = None,
+                 vlm: Optional[VLMClient] = None,
                  config: Optional[AgentConfig] = None):
         self.adb = adb
         self.ocr = ocr
@@ -50,6 +53,7 @@ class ScrapingAgent:
         self.memory = memory
         self.curriculum = curriculum
         self.entry_point = entry_point
+        self.vlm = vlm
         self.cfg = config or AgentConfig()
 
     def _scroll(self) -> None:
@@ -65,6 +69,7 @@ class ScrapingAgent:
 
         blocks_by_target: dict[str, list[str]] = {}
         covered: set[str] = set()
+        vlm_flagged: set[str] = set()
         empty_streak = 0
 
         for it in range(self.cfg.max_iters):
@@ -77,6 +82,16 @@ class ScrapingAgent:
             pick = self.scanner.find_next(shot, covered)
             if pick is None:
                 empty_streak += 1
+                if (self.vlm is not None
+                        and empty_streak == self.cfg.vlm_miss_trigger):
+                    remaining = [t for t in self.scanner.targets
+                                 if t not in covered and t not in vlm_flagged]
+                    for t in remaining:
+                        if self.vlm.is_visible(shot, t):
+                            print(f'  vlm: OCR missed but visible: {t} @ {shot.name}',
+                                  flush=True)
+                            self.memory.note_vlm_hit(t, str(shot))
+                            vlm_flagged.add(t)
                 if empty_streak >= self.cfg.empty_streak_stop:
                     break
                 self._scroll()
@@ -98,11 +113,13 @@ class ScrapingAgent:
 
         # Curriculum fallback for persistently-missed targets
         curriculum_recovered = []
+        vlm_recovered = []
         if self.curriculum:
             missing = set(self.scanner.targets) - covered
             for target in list(missing):
                 streak = self.memory.miss_streak(target)
-                if not self.curriculum.should_trigger(target, streak):
+                vlm_hint = target in vlm_flagged
+                if not (vlm_hint or self.curriculum.should_trigger(target, streak)):
                     continue
                 safe = self.capturer.safe_name(target)
                 if not self.curriculum.try_all(target, batch_dir, safe):
@@ -119,9 +136,13 @@ class ScrapingAgent:
                     continue
                 blocks_by_target.setdefault(target, []).extend(blocks)
                 covered.add(target)
-                curriculum_recovered.append(target)
+                strategy = 'vlm+search' if vlm_hint else 'search'
+                if vlm_hint:
+                    vlm_recovered.append(target)
+                else:
+                    curriculum_recovered.append(target)
                 self.memory.record_hit(target, blocks=len(blocks),
-                                        screens=screens, strategy='search')
+                                        screens=screens, strategy=strategy)
 
         # Dedup by content hash
         for name in list(blocks_by_target):
@@ -145,5 +166,7 @@ class ScrapingAgent:
             'covered': sorted(covered),
             'missed': missing,
             'curriculum_recovered': curriculum_recovered,
+            'vlm_recovered': vlm_recovered,
+            'vlm_flagged': sorted(vlm_flagged),
             'blocks_by_target': blocks_by_target,
         }

@@ -100,3 +100,10 @@ class AgenticMemory:
 
     def miss_streak(self, target: str) -> int:
         return self.get(target).get('miss_streak', 0)
+
+    def note_vlm_hit(self, target: str, shot_path: str) -> None:
+        entry = dict(self.get(target))
+        entry['last_vlm_hit_shot'] = shot_path
+        entry['last_vlm_hit_ts'] = time.strftime('%Y-%m-%dT%H:%M:%S')
+        entry['vlm_hits'] = entry.get('vlm_hits', 0) + 1
+        self._state[target] = entry

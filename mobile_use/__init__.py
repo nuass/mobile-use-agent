@@ -12,6 +12,7 @@ Modules:
   memory       — Agent S2/S3 style per-target agentic memory
   curriculum   — SEAgent style search-based fallback for persistently-missed targets
   pin          — auto-pin: locate pin toggle by OCR, flip by pixel color check
+  vlm          — vision-language model client for OCR miss verification
   agent        — outer loop harness combining the above
 
 The package is business-agnostic. Domain logic (which text counts as a hit,
@@ -25,10 +26,12 @@ from .group_capture import GroupCapturer
 from .memory import AgenticMemory
 from .curriculum import SearchCurriculum
 from .pin import AutoPinner
+from .vlm import VLMClient
 from .agent import ScrapingAgent
 
 __all__ = [
     'ADB', 'OcrEngine', 'ChatListScanner', 'GroupCapturer',
-    'AgenticMemory', 'SearchCurriculum', 'AutoPinner', 'ScrapingAgent',
+    'AgenticMemory', 'SearchCurriculum', 'AutoPinner', 'VLMClient',
+    'ScrapingAgent',
 ]
 __version__ = '0.1.0'
