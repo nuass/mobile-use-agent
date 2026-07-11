@@ -1,0 +1,120 @@
+{
+  "scope": "AndroidWorld OpenAppTaskEval only, 5/116 tasks",
+  "device": "Pixel 6 emulator API 33 google_apis arm64-v8a",
+  "seeds": 3,
+  "per_app_success": {
+    "settings": 1.0,
+    "clock": 1.0,
+    "contacts": 1.0,
+    "camera": 1.0,
+    "dialer": 1.0
+  },
+  "overall_success": 1.0,
+  "runs": [
+    {
+      "app": "settings",
+      "label": "Settings",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 0
+    },
+    {
+      "app": "clock",
+      "label": "Clock",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 0
+    },
+    {
+      "app": "contacts",
+      "label": "Contacts",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 0
+    },
+    {
+      "app": "camera",
+      "label": "Camera",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 0
+    },
+    {
+      "app": "dialer",
+      "label": "Phone",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 0
+    },
+    {
+      "app": "settings",
+      "label": "Settings",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 1
+    },
+    {
+      "app": "clock",
+      "label": "Clock",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 1
+    },
+    {
+      "app": "contacts",
+      "label": "Contacts",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 1
+    },
+    {
+      "app": "camera",
+      "label": "Camera",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 1
+    },
+    {
+      "app": "dialer",
+      "label": "Phone",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 1
+    },
+    {
+      "app": "settings",
+      "label": "Settings",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 2
+    },
+    {
+      "app": "clock",
+      "label": "Clock",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 2
+    },
+    {
+      "app": "contacts",
+      "label": "Contacts",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 2
+    },
+    {
+      "app": "camera",
+      "label": "Camera",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 2
+    },
+    {
+      "app": "dialer",
+      "label": "Phone",
+      "tapped": true,
+      "score": 1.0,
+      "seed": 2
+    }
+  ]
+}

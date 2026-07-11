@@ -82,6 +82,58 @@
 
 ---
 
+## Benchmark 对比
+
+本项目定位是"反自动化商用 app 场景下的抓取 pipeline"，公开 benchmark 上的
+高分从来不是设计目标。为了给一个可对标的客观数字，选跑了 Google DeepMind
+**AndroidWorld** 的一个受限子集。
+
+**Scope**：仅跑 `OpenAppTaskEval`（116 个任务中的 5 个）。这是 AndroidWorld
+里唯一一族"成功判定 = 把命名的 app 拉到前台"的任务，不需要 LLM 规划，正好
+用来直接测本项目的 ADB + OCR 感知栈。
+
+**环境**：Pixel 6 emulator、API 33、`google_apis;arm64-v8a`、无头
+（`-no-window -no-audio`）。运行器见 [`benchmarks/openapp_smoke.py`](./benchmarks/openapp_smoke.py)。
+
+| 任务 | seed 0 | seed 1 | seed 2 | 成功率 |
+|---|---|---|---|---|
+| 打开 Settings | ✓ | ✓ | ✓ | 3/3 |
+| 打开 Clock | ✓ | ✓ | ✓ | 3/3 |
+| 打开 Contacts | ✓ | ✓ | ✓ | 3/3 |
+| 打开 Camera | ✓ | ✓ | ✓ | 3/3 |
+| 打开 Phone（Dialer） | ✓ | ✓ | ✓ | 3/3 |
+| **合计** | | | | **15/15 (100%)** |
+
+**同赛道横向定位**（下表**非严格 head-to-head**，每一行的 scope 都不同，
+仅给读者一个"地图上的坐标"）：
+
+| Agent | Scope | AndroidWorld success |
+|---|---|---|
+| M3A baseline（Gemini 1.5 Pro） | full 116 | ~30% |
+| SeeAct（GPT-4o） | full 116 | ~16% |
+| UI-TARS-72B-SFT | full 116 | ~46% |
+| **mobile-use-agent（本项目）** | **5/116（仅 OpenApp）** | **100%** |
+
+诚实读法：同一行的数字互相不可比，因为 scope 不同。这个子集特意隔离出
+"感知 + 点击定位"这一层，正好是本项目最优化的部分。凡是需要 LLM
+多步规划的任务（`SimpleCalendarAddOneEvent`、`RecipeAddSingleRecipe`
+等），当前架构下会得 0 分，这一层要交给上层 planner 才能补齐。
+
+**复现**：
+
+```bash
+# 起 emulator，暴露 gRPC 8554
+emulator -avd Pixel_6_API_33 -no-snapshot -grpc 8554 -no-window
+
+# 在 mobile-use-agent 仓库里
+python benchmarks/openapp_smoke.py \
+    --adb $ANDROID_SDK_ROOT/platform-tools/adb --seeds 3
+```
+
+结果 JSON：`benchmarks/results/openapp_smoke.json`。
+
+---
+
 ## 架构一图
 
 ```

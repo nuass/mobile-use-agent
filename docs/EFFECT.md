@@ -42,3 +42,22 @@ Delta List              0.3         6
   (list view, group entry, pin toggle before/after). Every chat line
   is masked; only UI chrome is visible.
 - `memory_sample.json` — synthetic example of the memory file structure.
+
+## AndroidWorld OpenApp smoke (2026-07-08)
+
+Scoped subset benchmark, 5/116 tasks. See `README.md#benchmarks` for full
+context and reproduction command. Result JSON:
+`benchmarks/results/openapp_smoke.json`.
+
+| Task | seeds | success |
+|---|---|---|
+| Open Settings | 3 | 3/3 |
+| Open Clock | 3 | 3/3 |
+| Open Contacts | 3 | 3/3 |
+| Open Camera | 3 | 3/3 |
+| Open Phone (Dialer) | 3 | 3/3 |
+| **Overall** | | **15/15 (100%)** |
+
+Emulator: Pixel 6, API 33, `google_apis;arm64-v8a`, headless.
+Judgment: AndroidWorld's own `is_successful` — package on top of the
+activity stack after our OCR-driven home→drawer→tap sequence.

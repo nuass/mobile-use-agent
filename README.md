@@ -111,6 +111,62 @@ Screenshots and detailed logs are in `docs/` (chat contents are redacted).
 
 ---
 
+## Benchmarks
+
+`mobile-use-agent` was designed for real automation-hostile apps, not for
+public benchmark scoreboards. That said, we ran a scoped slice of Google
+DeepMind's **AndroidWorld** to have a paper-comparable number.
+
+**Scope:** `OpenAppTaskEval` only — 5 tasks of the 116-task suite. This is
+the one AndroidWorld task family whose success criterion (bring the named
+package to foreground) can be judged without an LLM planner, so the ADB+OCR
+stack is measured directly, no orchestration layer added.
+
+Setup: Pixel 6 emulator, API 33, `google_apis;arm64-v8a`, headless
+(`-no-window -no-audio`). See `benchmarks/openapp_smoke.py` for the runner.
+
+| Task | seed 0 | seed 1 | seed 2 | success |
+|---|---|---|---|---|
+| Open Settings | ✓ | ✓ | ✓ | 3/3 |
+| Open Clock | ✓ | ✓ | ✓ | 3/3 |
+| Open Contacts | ✓ | ✓ | ✓ | 3/3 |
+| Open Camera | ✓ | ✓ | ✓ | 3/3 |
+| Open Phone (Dialer) | ✓ | ✓ | ✓ | 3/3 |
+| **Overall** | | | | **15/15 (100%)** |
+
+Landscape (**not** run head-to-head; numbers below are from each paper's
+own full-116 evaluation with different agent architectures — listed here
+only so a reader can locate this scoped subset on the map):
+
+| Agent | Scope | AndroidWorld success |
+|---|---|---|
+| M3A baseline (Gemini 1.5 Pro) | full 116 | ~30% |
+| SeeAct (GPT-4o) | full 116 | ~16% |
+| UI-TARS-72B-SFT | full 116 | ~46% |
+| **mobile-use-agent (ours)** | **5/116 (OpenApp only)** | **100%** |
+
+Reading the table honestly: the numbers on the same row are not comparable
+because the scopes differ. This subset intentionally isolates perception +
+tap grounding, which is what this project optimizes for. Tasks that need
+LLM-driven multi-step planning (`SimpleCalendarAddOneEvent`,
+`RecipeAddSingleRecipe`, etc.) are out of scope for the current codebase
+and would score 0 on a full run.
+
+Reproduce:
+
+```bash
+# Start emulator with gRPC 8554
+emulator -avd Pixel_6_API_33 -no-snapshot -grpc 8554 -no-window
+
+# Then, in the mobile-use-agent repo
+python benchmarks/openapp_smoke.py \
+    --adb $ANDROID_SDK_ROOT/platform-tools/adb --seeds 3
+```
+
+Result JSON: `benchmarks/results/openapp_smoke.json`.
+
+---
+
 ## Architecture
 
 ```
