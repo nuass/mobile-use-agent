@@ -53,10 +53,12 @@ class VLMClient:
         except (KeyError, IndexError):
             return ""
 
-    def is_visible(self, image_path: str | Path, target: str) -> bool:
+    def is_visible(self, image_path: str | Path, target: str,
+                   context: str | None = None) -> bool:
+        where = f' in this {context}' if context else ''
         q = (
-            f'Is a chat or group with the name "{target}" visible in this WeChat '
-            'chat list screenshot? Answer only "yes" or "no".'
+            f'Is an item named "{target}" visible{where}? '
+            'Answer only "yes" or "no".'
         )
         ans = self.verify(image_path, q, max_tokens=6).lower()
         return ans.startswith("yes")

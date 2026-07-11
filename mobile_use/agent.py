@@ -35,6 +35,7 @@ class AgentConfig:
     scroll_dwell: float = 0.6
     row_pause: float = 0.3
     vlm_miss_trigger: int = 2
+    vlm_context: Optional[str] = None
 
 
 class ScrapingAgent:
@@ -87,7 +88,7 @@ class ScrapingAgent:
                     remaining = [t for t in self.scanner.targets
                                  if t not in covered and t not in vlm_flagged]
                     for t in remaining:
-                        if self.vlm.is_visible(shot, t):
+                        if self.vlm.is_visible(shot, t, context=self.cfg.vlm_context):
                             print(f'  vlm: OCR missed but visible: {t} @ {shot.name}',
                                   flush=True)
                             self.memory.note_vlm_hit(t, str(shot))
